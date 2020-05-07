@@ -109,6 +109,17 @@ if(!function_exists('bootswatchFeedback'))
 			$_SESSION['feedback-level'] = "";
 		}
 		return $myReturn; //data passed back for printing
-	} 
+	}
 
-}#end bootswatchFeedback()
+	if(!function_exists('makeLinks')){
+		function makeLinks($nav){
+			$myReturn = '';
+			foreach($nav as $key => $value){
+				$myReturn .= '<li><a href="' . site_url($key) . '">' . $value . '</a></li>' . PHP_EOL;
+			}
+			return $myReturn;
+		}
+
+	}//end makeLinks
+
+}#end bootswatchFeedback()-
