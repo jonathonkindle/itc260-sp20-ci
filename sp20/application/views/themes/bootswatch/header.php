@@ -24,10 +24,9 @@
         </div>
         <div class="navbar-collapse collapse" id="navbar-main">
           <ul class="nav navbar-nav">
-          <?=makeLinks($this->config->item('nav1')) ?>
-            <!-- <li class="active"><a href="#" title="">Active Link</a></li>
-            <li><?=anchor('news','News')?></li>
-            <li><?=anchor('news/create','Add News')?></li> -->
+            <!-- the following is created, referenced, and found in helpers/common_helper.php, config/routes.php, and config/custom_config.php  -->
+            <?=makeLinks($this->config->item('nav1')) ?>
+            <!-- <li class="active"><a href="#" title="">Active Link</a></li> -->
           </ul>
         </div>
       </div>
