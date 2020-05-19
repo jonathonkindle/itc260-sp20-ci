@@ -9,11 +9,30 @@ class Pics_model extends CI_Model {
                 $this->load->database();
         }
 
-        public function get_pics($tags = FALSE){
-                //should be passed in via quertstring/controller
-                //$tags = 'bears,polar';
+        // public function search_tag(){
+
+        // }
+
+        public function get_tags($slug = FALSE)
+        {
+
+                if ($slug === FALSE)
+                {
+                        $query = $this->db->get('sp20_pics');
+                        return $query->result_array();
+                }
+
+                $query = $this->db->get_where('sp20_pics', array('slug' => $slug));
+                return $query->row_array();
+               
+        }
+
+        public function get_pics($tags = FALSE)
+        {
+                //tags should be passed in via querystring/controller
+
                 $api_key = $this->config->item('flickrKey');
-                $perPage = 25;
+                $perPage = 100;
                 $url = 'https://api.flickr.com/services/rest/?method=flickr.photos.search';
                 $url.= '&api_key=' . $api_key;
                 $url.= '&tags=' . $tags;
@@ -26,23 +45,4 @@ class Pics_model extends CI_Model {
                 return $pics;
         }
 
-        public function set_news(){
-                $this->load->helper('url');
-
-                $slug = url_title($this->input->post('title'), 'dash', TRUE);
-
-                $data = array(
-                        'title' => $this->input->post('title'),
-                        'slug' => $slug,
-                        'text' => $this->input->post('text')
-                );
-
-                // return $this->db->insert('sp20_news', $data);
-
-                if($this->db->insert('sp20_news', $data)){//return slug - send to view page
-                        return $slug;
-                }else{//return false
-                        return false;
-                }
-        }
 }

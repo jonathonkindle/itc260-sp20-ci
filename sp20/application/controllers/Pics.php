@@ -9,36 +9,57 @@ class Pics extends CI_Controller {
                 parent::__construct();
                 $this->config->set_item('banner', 'Flickr Pics');
                 $this->load->model('pics_model');
+                $this->load->helper('url_helper');
         }
 
-        public function index() {
-                
+        public function index()
+        {
                 $this->config->set_item('title', 'Flickr API Pics');
 
                 $nav1 = $this->config->item('nav1');
 
-                // $data['pics'] = $this->pics_model->get_news();;
-                $data['title'] = 'Flicker API Pics';
-
-                $this->load->view('pics/index', $data);
-
-                $tags = 'mariners';
-                $pics = $this->pics_model->get_pics($tags);
-                foreach($pics as $pic){
-
-                        $size = 'm';
-                        $photo_url = '
-                        http://farm'. $pic->farm . '.staticflickr.com/' . $pic->server . '/' . $pic->id . '_' . $pic->secret . '_' . $size . '.jpg';
-
-                        echo "<img title='" . $pic->title . "' src='" . $photo_url . "' />";
- 
-                }
-
+                $data['title'] = 'Flickr Pics';
+                // $data['search'] = $this->pics_model->search_tag();
+                $data['pics'] = $this->pics_model->get_tags();
                 
+                $this->load->view($this->config->item('theme') . 'header');
+                $this->load->view('pics/index', $data);
+                $this->load->view($this->config->item('theme') . 'footer');           
         }
 
         public function view($slug = NULL)
+        {      
+
+                $dashless_slug = ucwords(str_replace("_", " ", $slug));
+
+                $this->config->set_item('title', $dashless_slug . ' Pics');
+                
+                $data['pictures'] = $this->pics_model->get_pics($slug);
+                $data['title'] =  'Pictures of ' . $dashless_slug;
+                
+                if (empty($data['pictures']))
+                {
+                        show_404("Please try another search");
+                }
+    
+                $this->load->view($this->config->item('theme') . 'header');
+                $this->load->view('pics/view', $data);
+                $this->load->view($this->config->item('theme') . 'footer');
+
+        }
+
+        // public function index() {
+
+        //         $data['title'] = 'Flicker API Pics';
+        //         $data['size'] = 'm';
+
+                
+        // }
+
+        public function pic_search($search)
         {
+                $params['tags'] = $search;
+                
                 // //slug without dashes
                 // $dashless_slug = str_replace("-", " ", $slug);
 

@@ -1,11 +1,13 @@
-<?php //application/views/pics/index.php 
+<!-- application/views/pics/index.php  -->
 
-$this->load->view($this->config->item('theme') . 'header');
+<h2><?php echo $title; ?></h2>
 
-?>
+<?php foreach ($pics as $pictures): ?>
 
-<?php
+        <h3><?php echo $pictures['title']; ?></h3>
+        <div class="main">
+                <?php echo $pictures['text']; ?>
+        </div>
+        <p><a href="<?php echo site_url('pics/'.$pictures['slug']); ?>">View Pictures</a></p>
 
-$this->load->view($this->config->item('theme') . 'footer');
-
-?>
+<?php endforeach;?>
